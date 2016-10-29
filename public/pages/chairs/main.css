@@ -1,0 +1,29 @@
+html, body{
+	height: 100%;
+}
+
+body{
+	margin: 0;
+    background-color: black;
+}
+
+canvas{
+	width: 100%;
+	height: 100%;
+	display: block;
+}
+
+#names {
+    position: fixed;
+    color: deeppink;
+    top: 0;
+    left: 50%;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 40px;
+    font-weight: bold;
+}
+
+#names.flipped {
+    text-align: right;
+    left: calc(50% - 400px);
+}

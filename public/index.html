@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>plastics</title>
+<style type="text/css">
+    body {
+        background: #ecf0f1;
+    }
+
+    body * {
+        box-sizing: border-box;
+    }
+
+    .title {
+        color: #d4d4d4;
+        text-align: center;
+        margin-bottom: 50px;
+    }
+
+    #main-container {
+        width: calc(100% - 40px);
+        margin: 0 auto;
+    }
+
+    #status-container {
+        display: none;
+    }
+    .err-frown {
+        font-size: 50px;
+        font-family: Helvetica;
+        color: black;
+    }
+    .status-message {
+        margin: 0 auto;
+        border-top: 5px solid #d4d4d4;
+        border-bottom: 5px solid #d4d4d4;
+        padding: 10px 50px;
+        font-size: 30px;
+        color: gray;
+        width: 300px;
+    }
+
+    .entry {
+        float: left;
+        width: 300px;
+        height: 180px;
+        margin: 7px;
+        padding: 5px;
+        border-radius: 3px;
+        box-shadow: 0 0 20px -5px #525252;
+        word-break: break-all;
+        overflow: hidden;
+        position: relative;
+        zoom: 0.5;
+    }
+
+    .entry a {
+        font-size: 144px;
+        font-family: sans-serif;
+        text-transform: uppercase;
+        color: #ecf0f1;
+        text-decoration: none;
+    }
+
+    .entry .desc {
+        position: absolute;
+        bottom: 10px;
+        left: 15px;
+        font-size: 23px;
+        color: #ecf0f1;
+        font-family: sans-serif;
+    }
+
+
+</style>
+</head>
+<body>
+<h1 class="title">Gulp Test</h1>
+<div id="main-container"></div>
+<div id="status-container">
+    <div class="status-message">
+        Loading...
+    </div>
+</div>
+
+<script src="../public/third_party/jquery-2.2.4.min.js"></script>
+<script src="../public/common/network.js"></script>
+<script>
+    var errContainer = $("#err-container");
+    var mainContainer = $("#main-container");
+
+    // TODO: replace with fetch?  No safari support tho
+    $.get("/api").then(onDataLoad, onDataError);
+    function onDataLoad (data){
+        var modules = JSON.parse(data);
+        var fragment = document.createDocumentFragment();
+        modules.forEach(function (data) {
+            var palette = ["#1abc9c", "#2ecc71", "#3498db", "#9b59b6", "#34495e",
+                        "#f1c40f", "#e67e22", "#e74c3c",              "#95a5a6"];
+            var backColor = palette[Math.floor(Math.random()*palette.length)];
+            var el = document.createElement("div");
+            el.classList.add("entry");
+            el.style.backgroundColor = backColor;
+
+            var anchor = document.createElement("a");
+            anchor.text = data.module.title;
+            anchor.href = data.entryPath;
+            var desc = document.createElement("div");
+            desc.textContent = data.module.title;
+            desc.className = "desc";
+
+            el.appendChild(anchor);
+            el.appendChild(desc);
+            fragment.appendChild(el);
+        });
+
+        mainContainer.html(fragment);
+    }
+
+    function onDataError (err){
+        errContainer.show();
+    }
+</script>
+</body>
+</html>
